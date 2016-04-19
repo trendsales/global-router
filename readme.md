@@ -30,22 +30,30 @@ will output
 ```json
 [
   {
-    "state": {},
+    "state": {
+      params: {}
+    },
     "result": "route1"
   },
   {
     "state": {
-      "id": "1234"
+      params: {
+        "id": "1234"
+      }
     },
     "result": "route3"
   },
   {
-    "state": {},
+    "state": {
+      params: {}
+    },
     "result": "route4"
   },
   {
     "state": {
-      "id": "1234"
+      params: {
+        "id": "1234"
+      }
     },
     "result": "route5"
   },
