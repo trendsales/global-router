@@ -4,14 +4,20 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
+    "lint": "eslint test lib",
     "watch": "mocha -w",
-    "test": "mocha"
+    "test": "npm run lint && mocha"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5"
+    "eslint": "^2.8.0",
+    "eslint-config-airbnb": "^7.0.0",
+    "jsdom": "^8.4.0",
+    "mocha": "^2.4.5",
+    "react": "^15.0.1",
+    "react-addons-test-utils": "^15.0.1"
   }
 }

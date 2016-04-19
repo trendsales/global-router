@@ -1,7 +1,7 @@
 var assert = require('chai').assert;
 var Path = require('../lib/index.js').Path;
 
-describe('Path', function() {
+describe('Path', function () {
   describe('constructor', function () {
     it('without object', function () {
       var path = new Path();
@@ -10,7 +10,7 @@ describe('Path', function() {
 
     it('with options', function () {
       var path = new Path('/hello/world/and///stuff/');
-      assert.deepEqual(path.elements, [ 'hello', 'world', 'and', 'stuff' ]);
+      assert.deepEqual(path.elements, ['hello', 'world', 'and', 'stuff']);
     });
   });
 

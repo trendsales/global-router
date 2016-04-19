@@ -1,7 +1,9 @@
 var assert = require('chai').assert;
 var Router = require('../lib/index.js').Router;
+var React = require('react');
+var TestUtils = require('react-addons-test-utils');
 
-describe('Router', function() {
+describe('Router', function () {
   describe('constructor without options', function () {
     it('should return object', function () {
       var router = new Router();
@@ -20,76 +22,69 @@ describe('Router', function() {
 
   describe('resolve route', function () {
     var router = new Router();
-    var route1 = 'route1';
-    var route2 = 'route2';
-    var route3 = 'route3';
+    router.add('*', 'route0');
+    router.add('/user/*', 'route1');
+    router.add('/user/:id', 'route2');
+    router.add('/user/:id/*', 'route3');
+    router.add('/user/*/images', 'route4');
+    router.add('/user/:id/images', 'route5');
+    router.add('/user/:id/details', 'route6');
 
-    it('Route should be added to router', function () {
-      router.add('/user/*', route3);
-      router.add('/user/:id/test', route2);
-      router.add('/user/:id/images', route1);
-      assert.equal(router.routes[0].callback, route3);
-    });
-
-    it('Route images should be resolveable', function () {
+    it('Route should be resolveable', function () {
       var routes = router.resolve('/user/1234/images');
-      assert.equal(routes[1].result, route1);
-    });
-
-    it('Route test should be resolveable', function () {
-      var routes = router.resolve('/user/1234/test');
-      assert.equal(routes[1].result, route2);
-    });
-
-    it('Route * should be resolveable', function () {
-      var routes = router.resolve('/user/1234/test');
-      assert.equal(routes[0].result, route3);
+      var mapped = routes.map(function (route) {
+        return route.result;
+      });
+      var expected = ['route0', 'route1', 'route3', 'route4', 'route5'];
+      assert.deepEqual(mapped, expected);
     });
   });
 
   describe('resolve processed route', function () {
     var router = new Router({
-      processResponse: function(current, prev) {
-        var response = {
-          me: {
-            name: current.result.name,
-            child: null
-          },
-          actions: [current.result.action]
-        };
-        if (prev) {
-          if (prev.actions) {
-            for (var i = 0; i < prev.actions.length; i++) {
-              response.actions.push(prev.actions[i]);
-            }
-          }
-          if (prev.me) {
-            if (!current.result.name) {
-              response.me = prev.me;
-            } else {
-              response.me.child = prev.me;
-            }
+      processResponse: function (current, previous) {
+        var elm = React.createElement(current.result.component);
+        var actions = current.result.action ? [current.result.action] : [];
+        if (previous) {
+          elm = React.cloneElement(elm, null, previous.component);
+          for (var i = 0; i < previous.actions.length; i++) {
+            actions.push(previous.actions[i]);
           }
         }
-        return response;
+
+        return {
+          component: elm,
+          actions: actions
+        };
       }
     });
 
     var route1 = {
-      name: 'route1',
-      action: 'action1'
+      action: function () {},
+      component: React.createClass({
+        render: function () {
+          return React.createElement('div', null, this.props.children, this.props.name);
+        }
+      })
     };
+
     var route2 = {
-      name: 'route2',
-      action: 'action2'
+      action: function () {},
+      component: React.createClass({
+        render: function () {
+          return React.createElement('h1', null, 'User', this.props.name);
+        }
+      })
     };
 
     it('Flatten route', function () {
       router.add('/user/*', route1);
       router.add('/user/:id/test', route2);
       var routes = router.resolve('/user/1234/test');
-      assert.equal(routes.actions[1], route2.action);
-      assert.equal(routes.me.child.name, route2.name);
+      var doc = TestUtils.renderIntoDocument(routes.component);
+      var h1 = TestUtils.findRenderedDOMComponentWithTag(doc, 'h1');
+      assert.equal(h1.textContent, 'User');
+      assert.equal(routes.actions.length, 2);
     });
   });
 });
