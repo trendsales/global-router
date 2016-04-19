@@ -2,3 +2,4 @@
 /node_modules
 /notes.md
 /coverage
+*-v8.log

@@ -2,6 +2,7 @@ var assert = require('chai').assert;
 var Router = require('../lib/index.js').Router;
 var React = require('react');
 var TestUtils = require('react-addons-test-utils');
+var ops = require('./utils/ops.js');
 
 describe('Router', function () {
   describe('constructor without options', function () {
@@ -128,6 +129,59 @@ describe('Router', function () {
       });
       var expected = ['route0', 'route1', 'route2', 'route4', 'route5', 'route6', 'route7'];
       assert.deepEqual(mapped, expected);
+    });
+  });
+
+  describe('benchmark', function () {
+    var router = new Router();
+    router.add('*', 'route0');
+    router.add('/user*', 'route1');
+    router.add('/user/*', 'route2');
+    router.add('/user/:id', 'route3');
+    router.add('/user/:id*', 'route4');
+    router.add('/user/:id/*', 'route5');
+    router.add('/user/*/images', 'route6');
+    router.add('/user/:id/images', 'route7');
+    router.add('/user/:id/details', 'route8');
+
+    it('Route should resolve fast', function () {
+      var opsRouter1 = ops(function () {
+        router.resolve('/user/1234/images');
+      });
+
+
+      router.add('*', 'route0');
+      router.add('/user*', 'route1');
+      router.add('/user/*', 'route2');
+      router.add('/user/:id', 'route3');
+      router.add('/user/:id*', 'route4');
+      router.add('/user/:id/*', 'route5');
+      router.add('/user/*/images', 'route6');
+      router.add('/user/:id/images', 'route7');
+      router.add('/user/:id/details', 'route8');
+
+      var opsRouter2 = ops(function () {
+        router.resolve('/user/1234/images');
+      });
+
+      router.add('*', 'route0');
+      router.add('/user*', 'route1');
+      router.add('/user/*', 'route2');
+      router.add('/user/:id', 'route3');
+      router.add('/user/:id*', 'route4');
+      router.add('/user/:id/*', 'route5');
+      router.add('/user/*/images', 'route6');
+      router.add('/user/:id/images', 'route7');
+      router.add('/user/:id/details', 'route8');
+
+      var opsRouter3 = ops(function () {
+        router.resolve('/user/1234/images');
+      });
+      assert.isTrue(opsRouter1 > 3000);
+      assert.isTrue(opsRouter2 < opsRouter1 * 2);
+      assert.isTrue(opsRouter3 < opsRouter1 * 3);
+
+      console.log(opsRouter3);
     });
   });
 });
