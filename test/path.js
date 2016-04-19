@@ -22,9 +22,21 @@ describe('Path', function () {
       assert.typeOf(path1.compare(path2), 'object');
     });
 
-    it('compare unequal paths', function () {
-      var path2 = new Path('/hello/sdf/and///stuff/');
-      assert.isFalse(path1.compare(path2));
+    it('compare equal paths', function () {
+      var path2 = new Path('/hello/world/and///stuff/');
+      assert.typeOf(path1.compare(path2), 'object');
+    });
+
+    it('compare equal paths with partial', function () {
+      var pathWithWild = new Path('/hello/world*');
+      var path2 = new Path('/hello/world/sdfsdf');
+      assert.typeOf(pathWithWild.compare(path2), 'object');
+    });
+
+    it('compare equal paths with partial param', function () {
+      var pathWithWildParam = new Path('/hello/:world*');
+      var path2 = new Path('/hello/world/sdfsdf');
+      assert.typeOf(pathWithWildParam.compare(path2), 'object');
     });
 
 
