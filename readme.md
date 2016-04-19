@@ -31,13 +31,13 @@ will output
 [
   {
     "state": {
-      params: {}
+      "params": {}
     },
     "result": "route1"
   },
   {
     "state": {
-      params: {
+      "params": {
         "id": "1234"
       }
     },
@@ -45,13 +45,13 @@ will output
   },
   {
     "state": {
-      params: {}
+      "params": {}
     },
     "result": "route4"
   },
   {
     "state": {
-      params: {
+      "params": {
         "id": "1234"
       }
     },
