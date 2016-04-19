@@ -103,4 +103,31 @@ describe('Router', function () {
       } catch (ex) {} // eslint-disable-line no-empty
     });
   });
+
+
+  describe('subrouter', function () {
+    var router1 = new Router();
+    router1.add('*', 'route0');
+    router1.add('/user*', 'route1');
+    router1.add('/user/*', 'route2');
+    router1.add('/user/:id', 'route3');
+
+    var router2 = new Router();
+    router2.add('/user/:id*', 'route4');
+    router2.add('/user/:id/*', 'route5');
+    router2.add('/user/*/images', 'route6');
+    router2.add('/user/:id/images', 'route7');
+    router2.add('/user/:id/details', 'route8');
+
+    router1.add('/', router2);
+
+    it('Route should be resolveable', function () {
+      var routes = router1.resolve('/user/1234/images');
+      var mapped = routes.map(function (route) {
+        return route.result;
+      });
+      var expected = ['route0', 'route1', 'route2', 'route4', 'route5', 'route6', 'route7'];
+      assert.deepEqual(mapped, expected);
+    });
+  });
 });

@@ -51,6 +51,13 @@ describe('Path', function () {
     });
   });
 
+  describe('toString', function () {
+    it('toString', function () {
+      var path = new Path('/user/images');
+      assert.equal(path.toString(), '/user/images');
+    });
+  });
+
   describe('Using paramertized path', function () {
     it('Identical paramatizes paths', function () {
       var path1 = new Path('/user/:id/images');
