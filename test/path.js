@@ -40,12 +40,19 @@ describe('Path', function() {
   });
 
   describe('Using paramertized path', function () {
-    it('split with empty', function () {
+    it('Identical paramatizes paths', function () {
       var path1 = new Path('/user/:id/images');
       var path2 = new Path('/user/1234/images');
       var compare = path1.compare(path2);
       assert.typeOf(compare, 'object');
       assert.equal(compare.params.id, 1234);
+    });
+
+    it('Different paramatizes paths', function () {
+      var path1 = new Path('/user/:id/test');
+      var path2 = new Path('/user/1234/images');
+      var compare = path1.compare(path2);
+      assert.isFalse(compare);
     });
   });
 
