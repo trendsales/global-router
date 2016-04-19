@@ -23,19 +23,21 @@ describe('Router', function () {
   describe('resolve route', function () {
     var router = new Router();
     router.add('*', 'route0');
-    router.add('/user/*', 'route1');
-    router.add('/user/:id', 'route2');
-    router.add('/user/:id/*', 'route3');
-    router.add('/user/*/images', 'route4');
-    router.add('/user/:id/images', 'route5');
-    router.add('/user/:id/details', 'route6');
+    router.add('/user*', 'route1');
+    router.add('/user/*', 'route2');
+    router.add('/user/:id', 'route3');
+    router.add('/user/:id*', 'route4');
+    router.add('/user/:id/*', 'route5');
+    router.add('/user/*/images', 'route6');
+    router.add('/user/:id/images', 'route7');
+    router.add('/user/:id/details', 'route8');
 
     it('Route should be resolveable', function () {
       var routes = router.resolve('/user/1234/images');
       var mapped = routes.map(function (route) {
         return route.result;
       });
-      var expected = ['route0', 'route1', 'route3', 'route4', 'route5'];
+      var expected = ['route0', 'route1', 'route2', 'route4', 'route5', 'route6', 'route7'];
       assert.deepEqual(mapped, expected);
     });
   });
