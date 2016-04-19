@@ -180,8 +180,6 @@ describe('Router', function () {
       assert.isTrue(opsRouter1 > 3000);
       assert.isTrue(opsRouter2 < opsRouter1 * 2);
       assert.isTrue(opsRouter3 < opsRouter1 * 3);
-
-      console.log(opsRouter3);
     });
   });
 });
