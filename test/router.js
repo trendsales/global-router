@@ -67,7 +67,7 @@ describe('Router', function () {
       action: function () { return 'route1'; },
       component: React.createClass({
         render: function () {
-          return React.createElement('div', null, this.props.children, this.props.name);
+          return React.createElement('div', null, ['Home', this.props.children], this.props.name);
         }
       })
     };
@@ -81,7 +81,7 @@ describe('Router', function () {
       })
     };
 
-    it('Flatten route', function () {
+    it('Flatten route with children', function () {
       router.add('/user/*', route1);
       router.add('/user/:id/test', route2);
       var routes = router.resolve('/user/1234/test');
@@ -90,6 +90,17 @@ describe('Router', function () {
       assert.equal(h1.textContent, 'User');
       assert.equal(routes.actions.length, 2);
       assert.equal(routes.actions[1](), 'route2');
+    });
+
+    it('Flatten route without children', function () {
+      router.add('/user/*', route1);
+      router.add('/user/:id/test', route2);
+      var routes = router.resolve('/user/1234');
+      var doc = TestUtils.renderIntoDocument(routes.component);
+      try {
+        TestUtils.findRenderedDOMComponentWithTag(doc, 'h1');
+        assert.fail();
+      } catch (ex) {} // eslint-disable-line no-empty
     });
   });
 });
