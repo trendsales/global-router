@@ -45,7 +45,7 @@ describe('Router', function () {
 
   describe('resolve processed route', function () {
     var router = new Router({
-      processResponse: function (current, previous) {
+      processResponse: function (previous, current) {
         if (previous && previous.stopped) return previous;
         var elm = React.createElement(current.result.component);
         var actions = current.result.action ? [current.result.action] : [];
