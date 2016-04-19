@@ -7,7 +7,7 @@
     "lint": "eslint test lib",
     "watch": "mocha -w",
     "test": "npm run lint && mocha",
-    "coverage": "istanbul cover _mocha -- -R spec"
+    "coverage": "istanbul cover _mocha -- -R spec && open coverage/lcov-report/lib/index.html"
   },
   "keywords": [],
   "author": "",
