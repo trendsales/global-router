@@ -37,18 +37,12 @@ will output
     "state": {
       "id": "1234"
     },
-    "result": "route2"
-  },
-  {
-    "state": {
-      "id": "1234"
-    },
     "result": "route3"
   },
   {
     "state": {},
     "result": "route4"
-  }
+  },
   {
     "state": {
       "id": "1234"
@@ -66,7 +60,7 @@ To change output, for instance to create a React tree from elements, a ```proces
 var router = new Router({
   processResponse: function(current, previous) {
     if (previous) {
-      return React.cloneElement(response, null, previous);
+      return React.cloneElement(current.result, null, previous);
     } else {
       return current.result;
     }
