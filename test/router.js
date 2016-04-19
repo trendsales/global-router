@@ -60,7 +60,7 @@ describe('Router', function () {
     });
 
     var route1 = {
-      action: function () {},
+      action: function () { return 'route1'; },
       component: React.createClass({
         render: function () {
           return React.createElement('div', null, this.props.children, this.props.name);
@@ -69,7 +69,7 @@ describe('Router', function () {
     };
 
     var route2 = {
-      action: function () {},
+      action: function () { return 'route2';},
       component: React.createClass({
         render: function () {
           return React.createElement('h1', null, 'User', this.props.name);
@@ -85,6 +85,7 @@ describe('Router', function () {
       var h1 = TestUtils.findRenderedDOMComponentWithTag(doc, 'h1');
       assert.equal(h1.textContent, 'User');
       assert.equal(routes.actions.length, 2);
+      assert.equal(routes.actions[1](), 'route2');
     });
   });
 });
