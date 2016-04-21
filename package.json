@@ -1,6 +1,6 @@
 {
   "name": "global-router",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A router which can be used for a bit of everything",
   "main": "lib/index.js",
   "scripts": {
@@ -9,6 +9,10 @@
     "test": "npm run lint && mocha",
     "coverage": "istanbul cover _mocha -- -R spec && open coverage/lcov-report/lib/index.html"
   },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/trendsales/global-router.git"
+},
   "keywords": [ "router" ],
   "author": "trendsales.dk",
   "license": "ISC",
