@@ -32,13 +32,24 @@ describe('Router', function () {
     router.add('/user/*/images', 'route6');
     router.add('/user/:id/images', 'route7');
     router.add('/user/:id/details', 'route8');
+    router.add('/', 'route9');
 
     it('Route should be resolveable', function () {
+
       var routes = router.resolve('/user/1234/images');
       var mapped = routes.map(function (route) {
         return route.result;
       });
       var expected = ['route0', 'route1', 'route2', 'route4', 'route5', 'route6', 'route7'];
+      assert.deepEqual(mapped, expected);
+    });
+
+    it('/ should be resolveable', function () {
+      var routes = router.resolve('/');
+      var mapped = routes.map(function (route) {
+        return route.result;
+      });
+      var expected = ['route0', 'route9'];
       assert.deepEqual(mapped, expected);
     });
   });
@@ -64,23 +75,27 @@ describe('Router', function () {
       }
     });
 
-    var route1 = {
-      action: function () { return 'route1'; },
-      component: React.createClass({
-        render: function () {
-          return React.createElement('div', null, ['Home', this.props.children], this.props.name);
-        }
-      })
-    };
+    var route1 = function () {
+      return {
+        action: function () { return 'route1'; },
+        component: React.createClass({
+          render: function () {
+            return React.createElement('div', null, ['Home', this.props.children], this.props.name);
+          }
+        })
+      };
+    }
 
-    var route2 = {
-      action: function () { return 'route2';},
-      component: React.createClass({
-        render: function () {
-          return React.createElement('h1', null, 'User', this.props.name);
-        }
-      })
-    };
+    var route2 = function () {
+      return {
+        action: function () { return 'route2';},
+        component: React.createClass({
+          render: function () {
+            return React.createElement('h1', null, 'User', this.props.name);
+          }
+        })
+      };
+    }
 
     it('Flatten route with children', function () {
       router.add('/user/*', route1);
@@ -90,7 +105,7 @@ describe('Router', function () {
       var h1 = TestUtils.findRenderedDOMComponentWithTag(doc, 'h1');
       assert.equal(h1.textContent, 'User');
       assert.equal(routes.actions.length, 2);
-      assert.equal(routes.actions[1](), 'route2');
+      assert.equal(routes.actions[1](), 'route1');
     });
 
     it('Flatten route without children', function () {
