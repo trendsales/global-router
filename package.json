@@ -1,7 +1,7 @@
 {
-  "name": "router",
-  "version": "1.0.0",
-  "description": "",
+  "name": "global-router",
+  "version": "0.1.0",
+  "description": "A router which can be used for a bit of everything",
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint test lib",
@@ -9,8 +9,8 @@
     "test": "npm run lint && mocha",
     "coverage": "istanbul cover _mocha -- -R spec && open coverage/lcov-report/lib/index.html"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [ "router" ],
+  "author": "trendsales.dk",
   "license": "ISC",
   "devDependencies": {
     "chai": "^3.5.0",

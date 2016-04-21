@@ -1,4 +1,4 @@
-# universal-router
+# global-router
 
 The idea is to create a router, which should play well in all environments, both in a node, client and universal application.
 
@@ -8,7 +8,7 @@ To create add routes, use the ```Route.add``` method, with the as a string. ```*
 The second parameter can be anything. These will be returned as an array for all matched routes when resolving an URL
 
 ```javascript
-var Router = require('universal-router').Router;
+var Router = require('global-router').Router;
 
 var router = new Router();
 router.add('/user/*', 'route1');
