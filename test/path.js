@@ -67,6 +67,13 @@ describe('Path', function () {
       assert.equal(compare.params.id, 1234);
     });
 
+    it('Match No Match', function () {
+      var path1 = new Path('/user/:id');
+      var path2 = new Path('/user/');
+      var compare = path1.compare(path2);
+      assert.isFalse(compare);
+    });
+
     it('Different paramatizes paths', function () {
       var path1 = new Path('/user/:id/test');
       var path2 = new Path('/user/1234/images');

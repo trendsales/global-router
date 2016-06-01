@@ -35,7 +35,6 @@ describe('Router', function () {
     router.add('/', 'route9');
 
     it('Route should be resolveable', function () {
-
       var routes = router.resolve('/user/1234/images');
       var mapped = routes.map(function (route) {
         return route.result;
@@ -52,6 +51,19 @@ describe('Router', function () {
       var expected = ['route0', 'route9'];
       assert.deepEqual(mapped, expected);
     });
+  });
+
+  describe('resolve route', function () {
+    var router = new Router();
+    router.add('/trades/seller*', 'route1');
+    router.add('/trades/seller/:id', 'route2');
+
+    var routes = router.resolve('/trades/seller/');
+    var mapped = routes.map(function (route) {
+      return route.result;
+    });
+    var expected = ['route1'];
+    assert.deepEqual(mapped, expected);
   });
 
   describe('resolve processed route', function () {
@@ -84,7 +96,7 @@ describe('Router', function () {
           }
         })
       };
-    }
+    };
 
     var route2 = function () {
       return {
@@ -95,7 +107,7 @@ describe('Router', function () {
           }
         })
       };
-    }
+    };
 
     it('Flatten route with children', function () {
       router.add('/user/*', route1);
@@ -105,7 +117,7 @@ describe('Router', function () {
       var h1 = TestUtils.findRenderedDOMComponentWithTag(doc, 'h1');
       assert.equal(h1.textContent, 'User');
       assert.equal(routes.actions.length, 2);
-      assert.equal(routes.actions[1](), 'route1');
+      assert.equal(routes.actions[1](), 'route2');
     });
 
     it('Flatten route without children', function () {
